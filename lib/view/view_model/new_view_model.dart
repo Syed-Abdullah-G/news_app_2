@@ -5,9 +5,16 @@ class NewsViewModel{
 
   final _rep = NewsRepo();
 
-  Future<NewsModel> fetchNews() async {
-    final response = await _rep.fetchNews();
-    return response;
+  Future<NewsModel> fetchNewsByCountry(String country) async {
+   if (country == "International"){
+      return await _rep.fetchNewsInternational();
+    } else {
+      return await _rep.fetchNewsCategory(country);
+    }
+ 
     
   }
+
+  
+
 }
