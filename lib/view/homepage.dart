@@ -1,12 +1,16 @@
+import 'dart:ffi';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:news/model/news_model.dart';
+import 'package:news/view/Query_screen.dart';
 import 'package:news/view/details_screen.dart';
 import 'package:news/view/view_model/new_view_model.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -16,6 +20,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
+
+
   shareUri(String url) async {
     final result = await Share.share(url);
 
@@ -39,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   @override
+  
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width * 1;
     final height = MediaQuery.sizeOf(context).height * 1;
@@ -105,7 +113,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             itemBuilder: (context, index) {
                               DateTime dateTime = DateTime.parse(
                                   results[index].publishedAt.toString());
-                              print(results[index].urlToImage.toString());
                               return Column(
                                 children: [
                                   InkWell(
@@ -180,14 +187,26 @@ class _MyHomePageState extends State<MyHomePage> {
                                               format.format(dateTime),
                                               textAlign: TextAlign.start,
                                             ),
-                                            IconButton(
-                                                onPressed: () {
-                                                  shareUri(results[index]
-                                                      .url
-                                                      .toString());
-                                                },
-                                                icon:
-                                                    Icon(Icons.ios_share_rounded))
+                                            Row(
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      shareUri(results[index]
+                                                          .url
+                                                          .toString());
+                                                    },
+                                                    icon:
+                                                        Icon(Icons.ios_share_rounded)),
+                                                        TextButton(onPressed: (){
+                                                      Navigator.push(context, MaterialPageRoute(builder:  (context) => QueryScreen(title : results[index].title.toString(), description: results[index].content.toString(),),));
+
+                                                    }, child: GradientText("AI", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),colors: [
+                                                      Colors.blue,Colors.red,Colors.teal
+                                                    ],))
+                                              ],
+                                            ),
+                                                    
+
                                           ],
                                         ),
                                       ),

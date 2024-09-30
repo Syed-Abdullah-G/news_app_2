@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:news/model/news_model.dart';
+import 'package:news/view/Query_screen.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:simple_animated_button/elevated_layer_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -89,13 +91,29 @@ class _DetailsScreenState extends State<DetailsScreen> {
               expandedHeight: height * 0.4,
               floating: false,
               pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                background: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: widget.urlToImage,
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Container(),
+              flexibleSpace: Stack(
+                children: [FlexibleSpaceBar(
+                  background: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: widget.urlToImage,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Container(),
+                  ),
                 ),
+                Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: ElevatedLayerButton(buttonHeight: 50, buttonWidth: 100, animationDuration: Duration(
+                    milliseconds: 200
+                  ), animationCurve: Curves.ease, onClick: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> QueryScreen(title: widget.title.toString(), description: widget.description.toString())));
+                  },topDecoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    border: Border.all(),
+                  ), topLayerChild: Text("Ask AI", style: GoogleFonts.bricolageGrotesque(fontSize: 20),), baseDecoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 82, 24, 130),border: Border.all()
+                  ),)
+                ) ]
               ),
             ),
             SliverToBoxAdapter(
